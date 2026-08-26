@@ -25,4 +25,21 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-// TODO: Add your tables here
+export const memberPlans = ["flex", "unlimited", "coach"] as const;
+export const memberStatuses = ["active", "paused", "expired"] as const;
+
+export const members = mysqlTable("members", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 120 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull().unique(),
+  phone: varchar("phone", { length: 32 }).notNull(),
+  plan: mysqlEnum("plan", memberPlans).notNull(),
+  status: mysqlEnum("status", memberStatuses).default("active").notNull(),
+  joinedAt: timestamp("joinedAt").notNull(),
+  expiresAt: timestamp("expiresAt").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Member = typeof members.$inferSelect;
+export type InsertMember = typeof members.$inferInsert;

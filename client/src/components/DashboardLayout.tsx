@@ -21,15 +21,14 @@ import {
 } from "@/components/ui/sidebar";
 import { startLogin } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
-import { LayoutDashboard, LogOut, PanelLeft, Users } from "lucide-react";
+import { Dumbbell, LayoutDashboard, LogOut, PanelLeft } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "Page 1", path: "/" },
-  { icon: Users, label: "Page 2", path: "/some-path" },
+  { icon: LayoutDashboard, label: "Member overview", path: "/dashboard" },
 ];
 
 const SIDEBAR_WIDTH_KEY = "sidebar-width";
@@ -58,22 +57,26 @@ export default function DashboardLayout({
 
   if (!user) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="flex flex-col items-center gap-8 p-8 max-w-md w-full">
-          <div className="flex flex-col items-center gap-6">
-            <h1 className="text-2xl font-semibold tracking-tight text-center">
-              Sign in to continue
+      <div className="flex min-h-screen items-center justify-center bg-[#101111] p-5 text-white">
+        <div className="w-full max-w-md rounded-[2rem] border border-white/10 bg-[#1d1f1b] p-7 text-center shadow-2xl sm:p-10">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-[#d9ff3f] text-[#151810]">
+            <Dumbbell className="h-5 w-5" strokeWidth={2.5} />
+          </div>
+          <div className="mt-7 flex flex-col items-center gap-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#d9ff3f]">ZIU / OPERATIONS</p>
+            <h1 className="font-display text-3xl font-semibold tracking-[-0.055em]">
+              MASUK KE RUANG KERJA.
             </h1>
-            <p className="text-sm text-muted-foreground text-center max-w-sm">
-              Access to this dashboard requires authentication. Continue to launch the login flow.
+            <p className="max-w-sm text-sm leading-6 text-white/50">
+              Dashboard ini menyimpan data operasional member Ziu Gym dan hanya tersedia untuk tim yang berwenang.
             </p>
           </div>
           <Button
             onClick={() => startLogin()}
             size="lg"
-            className="w-full shadow-lg hover:shadow-xl transition-all"
+            className="mt-8 w-full rounded-full bg-[#d9ff3f] text-[#151810] hover:bg-[#edff94]"
           >
-            Sign in
+            Masuk dengan akun tim
           </Button>
         </div>
       </div>
@@ -168,9 +171,7 @@ function DashboardLayoutContent({
               </button>
               {!isCollapsed ? (
                 <div className="flex items-center gap-2 min-w-0">
-                  <span className="font-semibold tracking-tight truncate">
-                    Navigation
-                  </span>
+                  <span className="font-display font-semibold tracking-tight truncate">ZIU GYM</span>
                 </div>
               ) : null}
             </div>
@@ -248,14 +249,14 @@ function DashboardLayoutContent({
               <div className="flex items-center gap-3">
                 <div className="flex flex-col gap-1">
                   <span className="tracking-tight text-foreground">
-                    {activeMenuItem?.label ?? "Menu"}
+                    {activeMenuItem?.label ?? "ZIU GYM"}
                   </span>
                 </div>
               </div>
             </div>
           </div>
         )}
-        <main className="flex-1 p-4">{children}</main>
+        <main className="flex-1 p-4 sm:p-6">{children}</main>
       </SidebarInset>
     </>
   );

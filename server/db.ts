@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertMember, InsertUser, members, users } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -89,4 +89,30 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+export async function listMembers() {
+  const db = await getDb();
+  if (!db) return [];
+
+  return db.select().from(members).orderBy(desc(members.createdAt));
+}
+
+export async function createMember(member: InsertMember) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+
+  await db.insert(members).values(member);
+}
+
+export async function updateMember(id: number, member: Partial<InsertMember>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+
+  await db.update(members).set(member).where(eq(members.id, id));
+}
+
+export async function updateMemberStatus(id: number, status: InsertMember["status"]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+
+  await db.update(members).set({ status }).where(eq(members.id, id));
+}
