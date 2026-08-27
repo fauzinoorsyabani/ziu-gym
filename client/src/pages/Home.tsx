@@ -2,7 +2,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { startLogin } from "@/const";
 import { Button } from "@/components/ui/button";
 import { ArrowDownRight, ArrowUpRight, Check, Dumbbell, Menu, MoveRight, Sparkles, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 
 const programs = [
@@ -13,10 +13,40 @@ const programs = [
 
 const benefits = ["Ruang latihan yang terarah", "Program yang mudah diikuti", "Pendekatan untuk progres berkelanjutan"];
 
+const heroPhrases = [
+  { lead: "BUILD", middle: "YOUR", accent: "BEST." },
+  { lead: "FIND", middle: "YOUR", accent: "POWER." },
+  { lead: "TRAIN", middle: "WITH", accent: "PURPOSE." },
+  { lead: "SHOW", middle: "UP", accent: "AGAIN." },
+];
+
 export default function Home() {
   const { isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [reducedMotion, setReducedMotion] = useState(() =>
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches || new URLSearchParams(window.location.search).has("reduced-motion")
+  );
+
+  useEffect(() => {
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncPreference = () => setReducedMotion(preference.matches || new URLSearchParams(window.location.search).has("reduced-motion"));
+    preference.addEventListener("change", syncPreference);
+    return () => preference.removeEventListener("change", syncPreference);
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion) return;
+
+    const interval = window.setInterval(() => {
+      setPhraseIndex((current) => (current + 1) % heroPhrases.length);
+    }, 2450);
+
+    return () => window.clearInterval(interval);
+  }, [reducedMotion]);
+
+  const activePhrase = heroPhrases[phraseIndex];
 
   const enterDashboard = () => {
     if (isAuthenticated) {
@@ -27,7 +57,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#101111] text-[#f6f6ef] selection:bg-[#d9ff3f] selection:text-[#11130e]">
+    <div className={`min-h-screen bg-[#101111] text-[#f6f6ef] selection:bg-[#d9ff3f] selection:text-[#11130e]${reducedMotion ? " motion-reduced" : ""}`}>
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#101111]/82 backdrop-blur-xl">
         <div className="container flex h-18 items-center justify-between gap-4 py-4">
           <button onClick={() => setLocation("/")} className="group flex items-center gap-2 text-left" aria-label="Ziu Gym beranda">
@@ -76,8 +106,10 @@ export default function Home() {
                 <span className="h-px w-8 bg-[#d9ff3f]" />
                 Ruang untuk berkembang
               </div>
-              <h1 className="font-display max-w-5xl text-[clamp(3.7rem,10.7vw,9.5rem)] font-bold leading-[0.84] tracking-[-0.095em] text-[#f5f5ed]">
-                BUILD<br />YOUR <span className="text-[#d9ff3f]">BEST.</span>
+              <h1 aria-live="polite" className="font-display max-w-5xl text-[clamp(3.7rem,10.7vw,9.5rem)] font-bold leading-[0.84] tracking-[-0.095em] text-[#f5f5ed]">
+                <span key={`${phraseIndex}-lead`} className="hero-word-swap block">{activePhrase.lead}</span>
+                <span key={`${phraseIndex}-middle`} className="hero-word-swap block [animation-delay:60ms]">{activePhrase.middle}</span>
+                <span key={`${phraseIndex}-accent`} className="hero-word-swap block text-[#d9ff3f] [animation-delay:120ms]">{activePhrase.accent}</span>
               </h1>
               <div className="mt-9 flex max-w-xl flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
                 <p className="max-w-xs text-base leading-7 text-white/62">Ziu Gym adalah ruang latihan untuk membangun kebiasaan yang terasa nyata—setiap repetisi, setiap hari.</p>
@@ -87,18 +119,30 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="rise-in relative border border-white/10 bg-[#20211d]/80 p-5 [animation-delay:100ms] sm:p-7">
+            <div className="rise-in relative min-h-[28rem] overflow-hidden border border-white/10 bg-[#20211d]/80 p-5 [animation-delay:100ms] sm:p-7">
+              <img src="/manus-storage/ziu-gym-hero-dumbbell_5f4621f3.png" alt="Dumbbell hitam di atas lantai gym" className="equipment-float absolute inset-0 h-full w-full object-cover opacity-80 mix-blend-screen" />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(21,23,19,0.4)_0%,rgba(21,23,19,0.08)_35%,rgba(21,23,19,0.88)_100%)]" />
               <div className="absolute right-0 top-0 h-20 w-20 border-b border-l border-[#d9ff3f]/70" />
-              <div className="mb-14 flex items-center justify-between text-xs uppercase tracking-[0.18em] text-white/45">
-                <span>ZIU / 2026</span>
-                <Sparkles className="h-4 w-4 text-[#d9ff3f]" />
+              <div className="relative mb-14 flex items-center justify-between text-xs uppercase tracking-[0.18em] text-white/55">
+                <span>ZIU / EQUIPMENT</span>
+                <Dumbbell className="h-4 w-4 text-[#d9ff3f]" strokeWidth={2.7} />
               </div>
-              <p className="font-display text-3xl font-semibold leading-none tracking-[-0.06em] sm:text-4xl">Bukan tentang cepat.<br />Tentang konsisten.</p>
-              <div className="mt-10 grid grid-cols-2 border-t border-white/10 pt-5 text-sm">
+              <div className="relative mt-38 sm:mt-42">
+                <p className="font-display text-3xl font-semibold leading-none tracking-[-0.06em] sm:text-4xl">Alat ada di sini.<br />Arah ada padamu.</p>
+              </div>
+              <div className="relative mt-10 grid grid-cols-2 border-t border-white/15 pt-5 text-sm">
                 <div className="border-r border-white/10 pr-4"><span className="block text-white/40">Fokus</span><span className="mt-1 block font-medium">Kekuatan & kontrol</span></div>
                 <div className="pl-4"><span className="block text-white/40">Cara kerja</span><span className="mt-1 block font-medium">Progress, bukan tekanan</span></div>
               </div>
             </div>
+          </div>
+        </section>
+
+        <section aria-label="Nilai latihan Ziu Gym" className="marquee-shell border-y border-white/10 bg-[#d9ff3f] py-3 text-[#151810]">
+          <div className="marquee-track whitespace-nowrap font-display text-lg font-bold uppercase tracking-[-0.04em] sm:text-2xl">
+            {["Strength", "•", "Focus", "•", "Discipline", "•", "Repeat", "•", "Strength", "•", "Focus", "•", "Discipline", "•", "Repeat", "•"].map((item, index) => (
+              <span key={`${item}-${index}`} className="mx-3 inline-block sm:mx-5">{item}</span>
+            ))}
           </div>
         </section>
 

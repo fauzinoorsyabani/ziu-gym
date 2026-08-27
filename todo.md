@@ -11,3 +11,10 @@
 - [x] Deploy the production-ready application to Vercel and validate the deployment.
 - [x] Extend member procedure tests for create, update, and status-change success and access-control paths.
 - [x] Validate authenticated dashboard presentation and member form without creating fictional member records; create, edit, and status procedures are covered by unit tests.
+- [x] Replace the static hero wordmark with an accessible animated rotation of at least four action words.
+- [x] Add a gym-equipment-only visual accent to the landing page without human subjects.
+- [x] Add a responsive marquee and refined motion system that respects reduced-motion preferences.
+- [x] Test the revised landing page across desktop and mobile viewports.
+- [x] Fix the reduced-motion fallback so all three hero lines remain visible as a complete static phrase.
+- [x] Verify the headline and marquee behavior when reduced-motion preferences are enabled.
+- [x] Test the landing page in a reduced-motion state and confirm the full hero phrase and static marquee remain readable.

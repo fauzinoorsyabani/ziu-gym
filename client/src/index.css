@@ -99,3 +99,22 @@
 
 @media (prefers-reduced-motion: no-preference) { .rise-in { animation: ziu-rise 550ms cubic-bezier(0.23, 1, 0.32, 1) both; } }
 @keyframes ziu-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+.marquee-shell { overflow: hidden; }
+.marquee-track { width: max-content; }
+.motion-reduced .marquee-track { width: 100%; white-space: normal; text-align: center; animation: none !important; }
+.motion-reduced .hero-word-swap, .motion-reduced .equipment-float { animation: none !important; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-word-swap { animation: ziu-word-swap 460ms cubic-bezier(0.23, 1, 0.32, 1) both; }
+  .marquee-track { animation: ziu-marquee 20s linear infinite; }
+  .equipment-float { animation: ziu-equipment-float 6s cubic-bezier(0.77, 0, 0.175, 1) infinite alternate; }
+}
+
+@keyframes ziu-word-swap { from { opacity: 0; transform: translateY(0.16em) skewY(3deg); } to { opacity: 1; transform: translateY(0) skewY(0); } }
+@keyframes ziu-marquee { from { transform: translateX(0); } to { transform: translateX(-33.33%); } }
+@keyframes ziu-equipment-float { from { transform: scale(1.02) translate3d(0, 0, 0); } to { transform: scale(1.08) translate3d(-1.5%, -1%, 0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { width: 100%; white-space: normal; text-align: center; }
+}
