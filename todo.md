@@ -18,3 +18,6 @@
 - [x] Fix the reduced-motion fallback so all three hero lines remain visible as a complete static phrase.
 - [x] Verify the headline and marquee behavior when reduced-motion preferences are enabled.
 - [x] Test the landing page in a reduced-motion state and confirm the full hero phrase and static marquee remain readable.
+- [x] Make the headline and marquee loops return from the final item to the first item with a seamless, polished transition.
+- [x] Verify the revised animation loop at desktop and mobile sizes.
+- [x] Observe one full headline and marquee cycle at desktop and mobile sizes to confirm the last-to-first transition is seamless.

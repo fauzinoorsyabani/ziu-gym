@@ -20,11 +20,14 @@ const heroPhrases = [
   { lead: "SHOW", middle: "UP", accent: "AGAIN." },
 ];
 
+const loopingHeroPhrases = [...heroPhrases, heroPhrases[0]];
+const marqueeWords = ["Strength", "Focus", "Discipline", "Repeat"];
+const loopingMarqueeWords = [...marqueeWords, ...marqueeWords];
+
 export default function Home() {
   const { isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [phraseIndex, setPhraseIndex] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(() =>
     window.matchMedia("(prefers-reduced-motion: reduce)").matches || new URLSearchParams(window.location.search).has("reduced-motion")
   );
@@ -35,18 +38,6 @@ export default function Home() {
     preference.addEventListener("change", syncPreference);
     return () => preference.removeEventListener("change", syncPreference);
   }, []);
-
-  useEffect(() => {
-    if (reducedMotion) return;
-
-    const interval = window.setInterval(() => {
-      setPhraseIndex((current) => (current + 1) % heroPhrases.length);
-    }, 2450);
-
-    return () => window.clearInterval(interval);
-  }, [reducedMotion]);
-
-  const activePhrase = heroPhrases[phraseIndex];
 
   const enterDashboard = () => {
     if (isAuthenticated) {
@@ -106,10 +97,19 @@ export default function Home() {
                 <span className="h-px w-8 bg-[#d9ff3f]" />
                 Ruang untuk berkembang
               </div>
-              <h1 aria-live="polite" className="font-display max-w-5xl text-[clamp(3.7rem,10.7vw,9.5rem)] font-bold leading-[0.84] tracking-[-0.095em] text-[#f5f5ed]">
-                <span key={`${phraseIndex}-lead`} className="hero-word-swap block">{activePhrase.lead}</span>
-                <span key={`${phraseIndex}-middle`} className="hero-word-swap block [animation-delay:60ms]">{activePhrase.middle}</span>
-                <span key={`${phraseIndex}-accent`} className="hero-word-swap block text-[#d9ff3f] [animation-delay:120ms]">{activePhrase.accent}</span>
+              <h1 className="font-display max-w-5xl text-[clamp(3.7rem,10.7vw,9.5rem)] font-bold leading-[0.84] tracking-[-0.095em] text-[#f5f5ed]">
+                <span className="sr-only">Build your best</span>
+                <span className="hero-phrase-viewport" aria-hidden="true">
+                  <span className="hero-phrase-track">
+                    {loopingHeroPhrases.map((phrase, index) => (
+                      <span key={`${phrase.lead}-${phrase.accent}-${index}`} className="hero-phrase">
+                        <span>{phrase.lead}</span>
+                        <span>{phrase.middle}</span>
+                        <span className="text-[#d9ff3f]">{phrase.accent}</span>
+                      </span>
+                    ))}
+                  </span>
+                </span>
               </h1>
               <div className="mt-9 flex max-w-xl flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
                 <p className="max-w-xs text-base leading-7 text-white/62">Ziu Gym adalah ruang latihan untuk membangun kebiasaan yang terasa nyata—setiap repetisi, setiap hari.</p>
@@ -140,8 +140,8 @@ export default function Home() {
 
         <section aria-label="Nilai latihan Ziu Gym" className="marquee-shell border-y border-white/10 bg-[#d9ff3f] py-3 text-[#151810]">
           <div className="marquee-track whitespace-nowrap font-display text-lg font-bold uppercase tracking-[-0.04em] sm:text-2xl">
-            {["Strength", "•", "Focus", "•", "Discipline", "•", "Repeat", "•", "Strength", "•", "Focus", "•", "Discipline", "•", "Repeat", "•"].map((item, index) => (
-              <span key={`${item}-${index}`} className="mx-3 inline-block sm:mx-5">{item}</span>
+            {loopingMarqueeWords.map((word, index) => (
+              <span key={`${word}-${index}`} className="mx-3 inline-block sm:mx-5">{word}<span className="ml-6 sm:ml-10">•</span></span>
             ))}
           </div>
         </section>
