@@ -1,5 +1,7 @@
 import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
 import type { User } from "../../drizzle/schema";
+import { getCurrentUser } from "../db";
+import { ENV } from "./env";
 import { sdk } from "./sdk";
 
 export type TrpcContext = {
@@ -18,6 +20,12 @@ export async function createContext(
   } catch (error) {
     // Authentication is optional for public procedures.
     user = null;
+  }
+
+  // In local development or standalone mode without external OAuth server,
+  // provide current simulated user role (Super Admin, Admin, or Member)
+  if (!user && !ENV.oAuthServerUrl) {
+    user = await getCurrentUser();
   }
 
   return {

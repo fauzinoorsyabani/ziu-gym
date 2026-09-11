@@ -40,11 +40,7 @@ export default function Home() {
   }, []);
 
   const enterDashboard = () => {
-    if (isAuthenticated) {
-      setLocation("/dashboard");
-      return;
-    }
-    startLogin();
+    setLocation("/dashboard");
   };
 
   return (
@@ -64,9 +60,13 @@ export default function Home() {
             <a href="#membership" className="transition-colors hover:text-white">Membership</a>
           </nav>
 
-          <div className="hidden md:block">
-            <Button onClick={enterDashboard} className="rounded-full bg-[#d9ff3f] px-5 text-[#151810] hover:bg-[#edff94]">
-              {isAuthenticated ? "Dashboard" : "Masuk dashboard"}
+          <div className="hidden items-center gap-3 md:flex">
+            <Button onClick={() => setLocation("/order")} className="rounded-full bg-[#d9ff3f] px-5 text-[#151810] hover:bg-[#edff94] font-semibold">
+              <Sparkles className="mr-1.5 h-4 w-4" />
+              Pesan Membership
+            </Button>
+            <Button onClick={enterDashboard} variant="outline" className="rounded-full border-white/20 text-white hover:border-[#d9ff3f] hover:bg-white/5">
+              Dashboard
               <ArrowUpRight className="ml-1.5 h-4 w-4" />
             </Button>
           </div>
@@ -80,7 +80,12 @@ export default function Home() {
               <a onClick={() => setMenuOpen(false)} href="#program" className="rounded-xl px-2 py-2 hover:bg-white/5">Program</a>
               <a onClick={() => setMenuOpen(false)} href="#mengapa-ziu" className="rounded-xl px-2 py-2 hover:bg-white/5">Mengapa Ziu</a>
               <a onClick={() => setMenuOpen(false)} href="#membership" className="rounded-xl px-2 py-2 hover:bg-white/5">Membership</a>
-              <Button onClick={enterDashboard} className="mt-2 rounded-full bg-[#d9ff3f] text-[#151810] hover:bg-[#edff94]">Masuk dashboard</Button>
+              <Button onClick={() => { setMenuOpen(false); setLocation("/order"); }} className="mt-2 rounded-full bg-[#d9ff3f] text-[#151810] font-semibold">
+                Pesan Membership & Visit
+              </Button>
+              <Button onClick={() => { setMenuOpen(false); enterDashboard(); }} variant="outline" className="rounded-full border-white/20 text-white">
+                Dashboard
+              </Button>
             </nav>
           </div>
         )}
@@ -111,16 +116,19 @@ export default function Home() {
                   </span>
                 </span>
               </h1>
-              <div className="mt-9 flex max-w-xl flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-                <p className="max-w-xs text-base leading-7 text-white/62">Ziu Gym adalah ruang latihan untuk membangun kebiasaan yang terasa nyata—setiap repetisi, setiap hari.</p>
-                <Button onClick={() => document.querySelector("#program")?.scrollIntoView({ behavior: "smooth" })} variant="outline" className="group w-fit rounded-full border-white/20 bg-transparent px-5 text-white hover:border-[#d9ff3f] hover:bg-[#d9ff3f] hover:text-[#151810]">
-                  Temukan ritmemu <ArrowDownRight className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-y-0.5 group-hover:translate-x-0.5" />
+              <div className="mt-9 flex max-w-xl flex-col gap-3 sm:flex-row sm:items-center">
+                <Button onClick={() => setLocation("/order")} className="rounded-full bg-[#d9ff3f] px-6 py-6 text-sm font-bold text-[#151810] shadow-[0_0_25px_rgba(217,255,63,0.3)] hover:bg-[#edff94] transition-all">
+                  Pesan Paket / Sekali Visit
+                  <ArrowUpRight className="ml-1.5 h-4 w-4" />
+                </Button>
+                <Button onClick={() => document.querySelector("#program")?.scrollIntoView({ behavior: "smooth" })} variant="outline" className="group w-fit rounded-full border-white/20 bg-transparent px-5 py-6 text-sm text-white hover:border-[#d9ff3f] hover:bg-[#d9ff3f] hover:text-[#151810]">
+                  Lihat Program <ArrowDownRight className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-y-0.5 group-hover:translate-x-0.5" />
                 </Button>
               </div>
             </div>
 
             <div className="rise-in relative min-h-[28rem] overflow-hidden border border-white/10 bg-[#20211d]/80 p-5 [animation-delay:100ms] sm:p-7">
-              <img src="/manus-storage/ziu-gym-hero-dumbbell_5f4621f3.png" alt="Dumbbell hitam di atas lantai gym" className="equipment-float absolute inset-0 h-full w-full object-cover opacity-80 mix-blend-screen" />
+              <img src="/dumbbell-hero.jpg" alt="Dumbbell hitam di atas lantai gym" className="equipment-float absolute inset-0 h-full w-full object-cover opacity-80 mix-blend-screen" />
               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(21,23,19,0.4)_0%,rgba(21,23,19,0.08)_35%,rgba(21,23,19,0.88)_100%)]" />
               <div className="absolute right-0 top-0 h-20 w-20 border-b border-l border-[#d9ff3f]/70" />
               <div className="relative mb-14 flex items-center justify-between text-xs uppercase tracking-[0.18em] text-white/55">
@@ -174,7 +182,65 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="membership" className="px-4 pb-20 sm:px-6 sm:pb-28"><div className="container overflow-hidden rounded-[2rem] border border-white/10 bg-[#e9ebdc] text-[#161812]"><div className="grid lg:grid-cols-[0.9fr_1.1fr]"><div className="p-8 sm:p-12"><p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6a7553]">Membership Ziu</p><h2 className="font-display mt-4 text-5xl font-semibold leading-[0.9] tracking-[-0.075em] sm:text-6xl">PILIH<br />MOMENMU.</h2><p className="mt-7 max-w-sm text-sm leading-7 text-[#56604a]">Tidak ada satu paket untuk semua orang. Cari bentuk komitmen yang membantumu terus datang.</p></div><div className="border-t border-[#161812]/12 p-4 lg:border-l lg:border-t-0 sm:p-6"><div className="grid gap-3">{[["Flex", "Untuk membangun ritme latihan yang baru."], ["Unlimited", "Untuk hari-hari ketika latihan adalah prioritas."], ["Coach", "Untuk progres dengan arah yang lebih personal."]].map(([name, detail], index) => <button key={name} onClick={enterDashboard} className="group flex items-center justify-between rounded-2xl border border-[#161812]/12 px-5 py-5 text-left transition-colors hover:bg-[#171916] hover:text-white sm:px-6"><div><span className="font-display text-xl font-semibold tracking-[-0.04em]">{name}</span><span className="mt-1 block text-sm opacity-65">{detail}</span></div><span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#171916] text-white transition-colors group-hover:bg-[#d9ff3f] group-hover:text-[#171916]"><ArrowUpRight className="h-4 w-4" /></span></button>)}</div></div></div></div></section>
+        <section id="membership" className="px-4 pb-20 sm:px-6 sm:pb-28">
+          <div className="container overflow-hidden rounded-[2rem] border border-white/10 bg-[#e9ebdc] text-[#161812]">
+            <div className="grid lg:grid-cols-[0.9fr_1.1fr]">
+              <div className="p-8 sm:p-12">
+                <div className="inline-flex items-center gap-2 rounded-full bg-[#161812]/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#161812]">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  Promo Hemat s/d 40%
+                </div>
+                <h2 className="font-display mt-4 text-5xl font-semibold leading-[0.9] tracking-[-0.075em] sm:text-6xl">
+                  PILIH<br />MOMENMU.
+                </h2>
+                <p className="mt-5 max-w-sm text-sm leading-7 text-[#56604a]">
+                  Tersedia opsi <strong>Sekali Visit</strong> (mulai Rp 50.000) hingga paket tahunan hemat 40% dengan cicilan setara Rp 7.000/hari.
+                </p>
+                <div className="mt-7">
+                  <Button
+                    onClick={() => setLocation("/order")}
+                    className="rounded-full bg-[#161812] px-6 py-5 text-sm font-bold text-[#d9ff3f] hover:bg-black"
+                  >
+                    Buka Kalkulator & Pesan
+                    <ArrowUpRight className="ml-1.5 h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+
+              <div className="border-t border-[#161812]/12 p-4 lg:border-l lg:border-t-0 sm:p-6">
+                <div className="grid gap-3">
+                  {[
+                    ["Flex", "Untuk membangun ritme latihan santai.", "Mulai Rp 50.000 / visit · Rp 210.000/bln"],
+                    ["Unlimited", "Prioritas latihan 24/7 tanpa batasan.", "Mulai Rp 75.000 / visit · Rp 300.000/bln", "POPULER"],
+                    ["Coach", "Didampingi pelatih privat personal.", "Mulai Rp 150.000 / visit · Rp 720.000/bln", "VIP"],
+                  ].map(([name, detail, price, badge]) => (
+                    <button
+                      key={name}
+                      onClick={() => setLocation("/order")}
+                      className="group flex items-center justify-between rounded-2xl border border-[#161812]/12 p-4 sm:p-5 text-left transition-colors hover:bg-[#171916] hover:text-white"
+                    >
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-display text-xl font-semibold tracking-[-0.04em]">{name}</span>
+                          {badge && (
+                            <span className="rounded-full bg-[#161812] px-2 py-0.5 text-[10px] font-bold text-[#d9ff3f] group-hover:bg-[#d9ff3f] group-hover:text-[#161812]">
+                              {badge}
+                            </span>
+                          )}
+                        </div>
+                        <span className="mt-1 block text-xs opacity-65">{detail}</span>
+                        <span className="mt-1.5 block text-xs font-semibold text-[#3b4728] group-hover:text-[#d9ff3f]">{price}</span>
+                      </div>
+                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#171916] text-white transition-colors group-hover:bg-[#d9ff3f] group-hover:text-[#171916]">
+                        <ArrowUpRight className="h-4 w-4" />
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <section className="border-t border-white/10 px-4 py-18 sm:px-6"><div className="container flex flex-col items-start justify-between gap-8 sm:flex-row sm:items-end"><div><p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#d9ff3f]">Untuk tim Ziu</p><h2 className="font-display mt-3 text-4xl font-semibold tracking-[-0.065em] sm:text-5xl">KELOLA MEMBER,<br />JAGA MOMENTUM.</h2></div><Button onClick={enterDashboard} className="rounded-full bg-[#d9ff3f] px-6 text-[#161812] hover:bg-[#edff94]">Buka dashboard <ArrowUpRight className="ml-2 h-4 w-4" /></Button></div></section>
       </main>
